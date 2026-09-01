@@ -211,7 +211,11 @@ async def sentiment_agent(symbol: str, simulate_failure: bool = False) -> dict:
         return {
             "name": AGENT_NAME,
             "status": "completed",
-            "signal": signal,
+            "signal": {
+		"POSITIVE": "BULLISH",
+   		"MIXED": "NEUTRAL",
+    		"NEGATIVE": "BEARISH",
+	    }.get(signal, "UNAVAILABLE"),
             "confidence": confidence,
             "summary": summary,
             "evidence": evidence,
