@@ -123,7 +123,7 @@ async def portfolio_agent(
     max_volatility = profiles[profile_norm]["max_volatility"]
     holding_volatility = target_holding.get("volatility")
 
-    concentration = "within_limit" if projected_exposure <= limit else "over_limit"
+    concentration = "LOW" if projected_exposure <= limit else "HIGH"
     volatility_breach = holding_volatility is not None and holding_volatility > max_volatility
 
     warnings = []
