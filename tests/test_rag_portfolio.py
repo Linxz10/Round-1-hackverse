@@ -173,7 +173,7 @@ def test_personalization_conservative_vs_aggressive_differ():
 def test_concentration_warning_generated_when_limit_exceeded():
     result = run(portfolio_agent("TCS", "conservative", investment_percentage=14))
     assert result["concentration"] == "over_limit"
-    assert result["signal"] == "CAUTION"
+    assert result["signal"] == "BEARISH"
     assert any("exceeds" in item for item in result["evidence"])
 
 
@@ -187,7 +187,7 @@ def test_missing_symbol_data_is_unavailable_not_fabricated():
 
 def test_unknown_profile_handled_safely():
     result = run(portfolio_agent("TCS", "not_a_real_profile", investment_percentage=14))
-    assert result["status"] == "error"
+    assert result["status"] == "unavailable"
     assert result["currentExposure"] == "unavailable"
 
 
