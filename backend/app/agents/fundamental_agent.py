@@ -12,7 +12,7 @@ inventing figures.
 
 import time
 
-from backend.app.services.retrieval import retrieve_documents
+from app.services.retrieval import retrieve_documents
 
 SUPPORTED_SYMBOLS = {"TCS", "RELIANCE", "INFY"}
 
