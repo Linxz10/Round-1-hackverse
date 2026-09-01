@@ -136,7 +136,7 @@ def test_sentiment_agent_positive_case():
     # TCS sample headlines are designed to be majority positive, no negatives.
     result = run(sentiment_agent("TCS"))
     assert_contract_shape(result)
-    assert result["signal"] == "POSITIVE"
+    assert result["signal"] == "BULLISH"
     assert result["confidence"] > 0
     assert result["name"] == "News Sentiment Agent"
  
@@ -145,7 +145,7 @@ def test_sentiment_agent_mixed_case():
     # RELIANCE sample headlines contain both positive and negative tags.
     result = run(sentiment_agent("RELIANCE"))
     assert_contract_shape(result)
-    assert result["signal"] == "MIXED"
+    assert result["signal"] == "NEUTRAL"
     assert result["confidence"] > 0
  
  
@@ -153,7 +153,7 @@ def test_sentiment_agent_negative_case():
     # INFY sample headlines are designed to be majority negative, no positives.
     result = run(sentiment_agent("INFY"))
     assert_contract_shape(result)
-    assert result["signal"] == "NEGATIVE"
+    assert result["signal"] == "BEARISH"
     assert result["confidence"] > 0
  
  
