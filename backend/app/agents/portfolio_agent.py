@@ -53,13 +53,13 @@ async def portfolio_agent(
 
     if not symbol or not isinstance(symbol, str):
         return _agent_result(
-            status="error",
+            status="unavailable",
             summary="No symbol provided. Not financial advice.",
             latency=_latency_ms(start),
         )
     if not profile or not isinstance(profile, str):
         return _agent_result(
-            status="error",
+            status="unavailable",
             summary="No profile provided. Not financial advice.",
             latency=_latency_ms(start),
         )
@@ -71,14 +71,14 @@ async def portfolio_agent(
         profiles = _load_json(_PROFILES_PATH)
     except (FileNotFoundError, json.JSONDecodeError):
         return _agent_result(
-            status="error",
+            status="unavailable",
             summary="User profile data unavailable. Not financial advice.",
             latency=_latency_ms(start),
         )
 
     if profile_norm not in profiles:
         return _agent_result(
-            status="error",
+            status="unavailable",
             summary=(
                 f"Unknown profile '{profile}'. Supported profiles: "
                 f"{', '.join(sorted(profiles))}. Not financial advice."
@@ -90,7 +90,7 @@ async def portfolio_agent(
         portfolio_data = _load_json(_PORTFOLIOS_PATH)
     except (FileNotFoundError, json.JSONDecodeError):
         return _agent_result(
-            status="error",
+            status="unavailable",
             summary="Portfolio data unavailable. Not financial advice.",
             latency=_latency_ms(start),
         )
@@ -123,11 +123,11 @@ async def portfolio_agent(
     max_volatility = profiles[profile_norm]["max_volatility"]
     holding_volatility = target_holding.get("volatility")
 
-    concentration = "within_limit" if projected_exposure <= limit else "over_limit"
+    concentration = "LOW" if projected_exposure <= limit else "HIGH"
     volatility_breach = holding_volatility is not None and holding_volatility > max_volatility
 
     warnings = []
-    if concentration == "over_limit":
+    if concentration == "HIGH":
         warnings.append(
             f"Projected {sector} exposure of {projected_exposure}% exceeds the "
             f"{profile_norm} profile's {limit}% sector limit."
@@ -146,7 +146,7 @@ async def portfolio_agent(
         )
     )
 
-    signal = "SUITABLE" if not warnings else "CAUTION"
+    signal = "BULLISH" if not warnings else "BEARISH"
     confidence = 90
 
     evidence = [
